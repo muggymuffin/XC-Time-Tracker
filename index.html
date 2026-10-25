@@ -10,9 +10,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#d9480f">
 <style>
-:root{--bg:#f6f5f1;--card:#fff;--tx:#1b1b1a;--mut:#77756e;--ac:#d9480f;--ln:#e4e2db;--ok:#2b8a3e;--bad:#c92a2a;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#151514;--card:#222220;--tx:#f1efe8;--mut:#a09d92;--ac:#ff7a3d;--ln:#35342f;--ok:#69db7c;--bad:#ff8787;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#151514;--card:#222220;--tx:#f1efe8;--mut:#a09d92;--ac:#ff7a3d;--ln:#35342f;--ok:#69db7c;--bad:#ff8787;color-scheme:dark}
+:root{--bg:#f6f5f1;--card:#fff;--tx:#1b1b1a;--mut:#77756e;--ac:#d9480f;--ln:#e4e2db;--ok:#2b8a3e;--bad:#c92a2a;--wn:#f0b400;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#151514;--card:#222220;--tx:#f1efe8;--mut:#a09d92;--ac:#ff7a3d;--ln:#35342f;--ok:#69db7c;--bad:#ff8787;--wn:#ffd43b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#151514;--card:#222220;--tx:#f1efe8;--mut:#a09d92;--ac:#ff7a3d;--ln:#35342f;--ok:#69db7c;--bad:#ff8787;--wn:#ffd43b;color-scheme:dark}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,Segoe UI,sans-serif}
 body.dragging,body.dragging *{user-select:none;-webkit-user-select:none;cursor:grabbing!important}
@@ -20,8 +20,13 @@ main{max-width:520px;margin:0 auto;padding:16px}
 h1{font-size:20px;margin:4px 0 12px}h2{font-size:18px;margin:0 0 8px}
 .list{position:relative}
 .row{height:56px;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:0 12px 0 0;margin-bottom:8px;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.row input.gi{flex:none;width:92px;padding:7px 8px;margin:0;font-size:15px;text-align:center;-webkit-user-select:text;user-select:text}
+.row.g-ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 16%,var(--card))}
+.row.g-near{border-color:var(--wn);background:color-mix(in srgb,var(--wn) 22%,var(--card))}
+.row.g-bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 16%,var(--card))}
+.gd{font-weight:700;color:var(--tx);margin-right:6px}.gd:empty{display:none}
 .row.drag{background:color-mix(in srgb,var(--ac) 16%,var(--card));border-color:var(--ac);box-shadow:0 8px 22px #0005;z-index:5;position:relative}
-.h{touch-action:none;cursor:grab;font-size:22px;color:var(--mut);padding:0 8px 0 14px;height:100%;display:flex;align-items:center;user-select:none;-webkit-user-select:none}
+.h{touch-action:none;cursor:grab;font-size:22px;color:var(--tx);background:color-mix(in srgb,var(--ln) 60%,transparent);border-radius:10px 0 0 10px;padding:0 12px;height:100%;display:flex;align-items:center;user-select:none;-webkit-user-select:none}
 .row.drag .h{color:var(--ac)}
 .nm{flex:1;min-width:0;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .nm small{display:block;font-weight:400;font-size:12px;color:var(--mut);overflow:hidden;text-overflow:ellipsis}
@@ -41,6 +46,14 @@ button.s{font:inherit;border:1px solid var(--ln);border-radius:10px;background:v
 .tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px;padding-bottom:4px}
 .tab{flex:none;font:inherit;font-size:14px;border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:999px;padding:8px 14px;cursor:pointer;white-space:nowrap}
 .bar .tab{padding:12px 14px;font-size:16px}
+.tw{position:relative;margin-bottom:10px}
+.tw .tabs{margin-bottom:0;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.tw .tabs::-webkit-scrollbar{display:none}
+.tar{position:absolute;top:0;bottom:4px;width:40px;border:0;padding:0;color:var(--tx);font:700 26px/1 system-ui,sans-serif;cursor:pointer;display:none;align-items:center}
+.tar.l{left:0;justify-content:flex-start;padding-left:6px;background:linear-gradient(90deg,var(--bg) 35%,transparent)}
+.tar.r{right:0;justify-content:flex-end;padding-right:6px;background:linear-gradient(270deg,var(--bg) 35%,transparent)}
+.tw.cl .tar.l,.tw.cr .tar.r{display:flex}
+#kbd{position:fixed;right:12px;z-index:200;display:none;padding:10px 18px;border-radius:999px;border:0;background:var(--ac);color:#fff;font:700 16px system-ui,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.35)}
 .tab.on{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:700}
 .grid{display:flex;gap:8px}
 .slots{width:100px;flex:none}
@@ -78,12 +91,16 @@ summary{cursor:pointer;margin:8px 0}
 <script src="jsQR.js"></script>
 <script>
 const $=s=>document.querySelector(s);
-let S={phase:'setup',order:[],pred:[],marks:[],def:{label:'Marker 1',dist:''},total:'',unit:'mi',markers:[],cur:0,start:0,final:0,raf:0,nid:1,rid:'',epoch:0,flash:'',invRid:'',munit:'mi',tdraft:'',hinv:null,hsel:[],hm:[],hc:0,modal:null,draft:null};
+let S={phase:'setup',raceName:'',order:[],pred:[],marks:[],def:{label:'Marker 1',dist:''},total:'',unit:'mi',markers:[],cur:0,start:0,final:0,raf:0,nid:1,rid:'',epoch:0,flash:'',invRid:'',munit:'mi',tdraft:'',hinv:null,hsel:[],hm:[],hc:0,modal:null,draft:null,goals:{}};
 const M=()=>S.markers[S.cur];
 const mks=()=>S.marks.length?S.marks:[S.def];
 const fmt=ms=>{const t=Math.floor(ms/10),c=t%100,s=Math.floor(t/100)%60,m=Math.floor(t/6000);return m+':'+String(s).padStart(2,'0')+'.'+String(c).padStart(2,'0')};
 const fmtE=ms=>{const s=Math.round(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
-const parse=s=>{s=String(s).trim();if(!s)return null;const p=s.split(':');let v;if(p.length===2)v=(+p[0])*60+(+p[1]);else if(p.length===1)v=+p[0];else return null;return isNaN(v)||v<0?null:Math.round(v*1000)};
+const parse=s=>{s=String(s).trim();if(!s)return null;
+  // Periods work as separators so the number pad is enough: 16.49 = 16:49, 16.49.00 = 16:49.00 (min.sec.hundredths)
+  if(!s.includes(':')&&s.includes('.')){const q=s.split('.');if(q.length>3||q.some(x=>!/^\d+$/.test(x)))return null;
+    const mi=+q[0],se=+q[1],cs=q[2]?+q[2].padEnd(2,'0').slice(0,2):0;if(se>=60)return null;return Math.round((mi*60+se+cs/100)*1000)}
+  const p=s.split(':');let v;if(p.length===2)v=(+p[0])*60+(+p[1]);else if(p.length===1)v=+p[0];else return null;return isNaN(v)||v<0?null:Math.round(v*1000)};
 const now=()=>S.phase==='race'?performance.now()-S.start:S.final;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const byId=id=>S.order.find(p=>p.id==id);
@@ -93,7 +110,37 @@ const KMF=u=>u==='mi'?1.609344:1;
 const distKm=k=>(+k.dist>0?+k.dist:0)*KMF(k.unit||S.unit);
 const totKm=()=>(+S.total>0?+S.total:0)*KMF(S.unit);
 const relabel=(k,i)=>{const d=String(k.dist).trim();k.label=d!==''?(+d>0?String(+d):d)+' '+(k.unit||S.unit):'Marker '+(i+1)};
-function paceInfo(id){for(let j=S.markers.length-1;j>=0;j--){const mk=S.markers[j],d=distKm(mk);if(!(d>0))continue;const t=timeAt(mk,id);if(t!=null&&t>0)return{t,d}}return null}
+// Every timed point for a runner at markers that have a distance, nearest first to the start.
+function pts(id){const a=[];S.markers.forEach(mk=>{const d=distKm(mk),t=timeAt(mk,id);if(d>0&&t!=null&&t>0)a.push({d,t})});a.sort((x,y)=>x.d-y.d);return a}
+// Pace from the gap between a runner's two most recent splits (or start -> first split if they only have one).
+function recentPace(id){const a=pts(id);if(!a.length)return null;const p2=a[a.length-1],p1=a.length>1?a[a.length-2]:{d:0,t:0};if(p2.d<=p1.d||p2.t<=p1.t)return null;return{pace:(p2.t-p1.t)/(p2.d-p1.d),d:p2.d,t:p2.t}}
+// Goal pacing, judged at the marker you are viewing so old markers never change when later splits come in.
+// Red = any amount behind goal pace. Yellow = ahead, but within GOAL_TOL of the time they should have by that point (min 3 s),
+// so the "close to falling behind" window grows with distance. Green = comfortably ahead.
+const GOAL_TOL=0.02;
+const fg=ms=>{const t=fmt(ms);return t.endsWith('.00')?t.slice(0,-3):t};
+function goalState(id,ms){
+  const g=S.goals[id],D=totKm();if(!(g>0)||!(D>0))return null;
+  const mk=M(),cd=distKm(mk),ex=d=>g*Math.min(d,D)/D,own=timeAt(mk,id);
+  let diff=null,exp=0;
+  if(cd>0&&own!=null&&own>0){exp=ex(cd);diff=own-exp}
+  else{
+    const a=pts(id).filter(p=>!(cd>0)||p.d<cd);
+    if(a.length){const p=a[a.length-1];exp=ex(p.d);diff=p.t-exp}
+    if(S.phase==='race'&&cd>0){const e=ex(cd);if(ms>e&&(diff==null||ms-e>diff)){diff=ms-e;exp=e}}
+  }
+  if(diff==null)return null;
+  return{diff,st:diff>0?'bad':diff>=-Math.max(3000,exp*GOAL_TOL)?'near':'ok'};
+}
+function goalText(id,ms){const g=S.goals[id];if(!(g>0))return'';const s=goalState(id,ms);return s?(s.diff>0?'+':'−')+fmtE(Math.abs(s.diff)):'Goal '+fmtE(g)}
+function updGoals(){
+  const ms=now();
+  document.querySelectorAll('#act .row[data-id]').forEach(r=>{
+    const id=+r.dataset.id,s=goalState(id,ms);
+    r.classList.remove('g-ok','g-near','g-bad');if(s)r.classList.add('g-'+s.st);
+    const gd=r.querySelector('.gd');if(gd)gd.textContent=goalText(id,ms);
+  });
+}
 
 function sortable(el,done){
   el.querySelectorAll('.h').forEach(h=>{
@@ -150,26 +197,52 @@ function sortable(el,done){
 
 function render(){draw();renderModal();flashUI();saveState()}
 
-function draw(){
+function tabsHTML(inner){return `<div class="tw" id="tw"><div class="tabs" id="mtabs">${inner}</div><button class="tar l" id="tabl" aria-label="Scroll markers left">‹</button><button class="tar r" id="tabr" aria-label="Scroll markers right">›</button></div>`}
+function initTabs(sl){
+  const sc=$('#mtabs'),w=$('#tw');if(!sc||!w)return;
+  sc.scrollLeft=sl||0;
+  const upd=()=>{w.classList.toggle('cl',sc.scrollLeft>2);w.classList.toggle('cr',sc.scrollLeft+sc.clientWidth<sc.scrollWidth-2)};
+  // keep the selected marker in view, but only move if it is actually off-screen
+  const on=sc.querySelector('.tab.on');
+  if(on){const c=sc.getBoundingClientRect(),t=on.getBoundingClientRect();
+    if(t.left<c.left+8)sc.scrollLeft-=c.left+8-t.left;
+    else if(t.right>c.right-8)sc.scrollLeft+=t.right-(c.right-8)}
+  sc.addEventListener('scroll',upd,{passive:true});
+  $('#tabl').onclick=()=>sc.scrollBy({left:-sc.clientWidth*0.6,behavior:'smooth'});
+  $('#tabr').onclick=()=>sc.scrollBy({left:sc.clientWidth*0.6,behavior:'smooth'});
+  upd();
+}
+function draw(){const old=$('#mtabs'),sl=old?old.scrollLeft:0;draw0();initTabs(sl)}
+window.addEventListener('resize',()=>{const w=$('#tw'),sc=$('#mtabs');if(w&&sc){w.classList.toggle('cl',sc.scrollLeft>2);w.classList.toggle('cr',sc.scrollLeft+sc.clientWidth<sc.scrollWidth-2)}});
+function draw0(){
   if(S.phase[0]==='h')return drawHelper();
   const a=$('#app');
   if(S.phase==='setup'){
     a.innerHTML=`<h1>Race Split Taker</h1>
     ${modeSeg('org')}
+    <label for="racename">Race name</label><input id="racename" value="${esc(S.raceName||'')}" placeholder="e.g. County Championships" autocomplete="off">
     <div class="bar"><button class="s" id="scn">Import splits</button><button class="s" id="hst">Saved races</button></div>
     <div class="bar"><button class="s" id="tms">Team presets</button></div>
     <div class="add"><input id="in" placeholder="Add a name" autocomplete="off"><button class="p" id="addb">Add</button></div>
-    <p class="hint">Drag ☰ to set your predicted finish order (top = first).</p>
-    <div class="list" id="lst">${S.order.map(p=>`<div class="row" data-id="${p.id}"><span class="h">☰</span><span class="nm">${esc(p.name)}</span><button class="x" data-x="${p.id}">×</button></div>`).join('')}</div>
+    <p class="hint">Press and drag ⇅ to put runners in your predicted finishing order (top = first). Optional: type a goal finish time next to a name (16:49 or 16.49).</p>
+    <div class="list" id="lst">${S.order.map(p=>`<div class="row" data-id="${p.id}"><span class="h">⇅</span><span class="nm">${esc(p.name)}</span><input class="gi" data-gi="${p.id}" value="${S.goals[p.id]>0?fg(S.goals[p.id]):''}" placeholder="Goal" inputmode="text" autocomplete="off" autocapitalize="off" aria-label="Goal time for ${esc(p.name)}"><button class="x" data-x="${p.id}">×</button></div>`).join('')}</div>
     <h1 style="font-size:16px;margin-top:18px">Markers</h1>
     <p class="hint">Add each point where you’ll take splits by its distance. Markers are named automatically, and each can use miles or kilometers, so you can mix them.</p>
     <div class="add"><input id="mdist" type="number" step="any" min="0" inputmode="decimal" placeholder="Distance"><select id="munit" class="sm"><option value="mi" ${S.munit!=='km'?'selected':''}>mi</option><option value="km" ${S.munit==='km'?'selected':''}>km</option></select><button class="s" id="addmk">Add</button></div>
-    <div class="tabs" style="flex-wrap:wrap">${S.marks.map((k,i)=>`<button class="tab" data-m="${i}">${i+1}. ${esc(k.label)} ×</button>`).join('')}</div>
+    <div class="tabs" style="flex-wrap:wrap">${S.marks.map((k,i)=>`<button class="tab" data-m="${i}">• ${esc(k.label)} ×</button>`).join('')}</div>
     <button class="p" id="go" style="width:100%;margin-top:6px" ${S.order.length<1?'disabled':''}>Continue</button>
     <p class="cr"><button class="lnk" id="crd">Credits &amp; licenses</button></p>`;
     const add=()=>{const v=$('#in').value.trim();if(!v)return;S.order.push({id:S.nid++,name:v});render();$('#in').focus()};
+    $('#racename').oninput=e=>{S.raceName=e.target.value;saveState()};
     $('#addb').onclick=add;$('#in').onkeydown=e=>{if(e.key==='Enter')add()};$('#crd').onclick=()=>{S.modal={type:'credits'};render()};bindSync();$('#hst').onclick=()=>{S.modal={type:'hist'};render()};$('#tms').onclick=()=>{S.modal={type:'teams'};render()};bindSeg();
     a.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{S.order=S.order.filter(p=>p.id!=b.dataset.x);render()});
+    a.querySelectorAll('[data-gi]').forEach(i=>{
+      const id=i.dataset.gi;
+      i.oninput=()=>{const v=i.value.trim();if(!v){delete S.goals[id];i.style.borderColor='';saveState();return}
+        const t=parse(v);if(t==null||t<=0){i.style.borderColor='var(--bad)';return}S.goals[id]=t;i.style.borderColor='';saveState()};
+      i.onchange=()=>{i.value=S.goals[id]>0?fg(S.goals[id]):'';i.style.borderColor=''};
+      i.onkeydown=e=>{if(e.key==='Enter')i.blur()};
+    });
     sortable($('#lst'),ids=>{S.order=ids.map(byId);render()});
     const addMk=()=>{const v=$('#mdist').value.trim();if(!(+v>0))return;const k={dist:v,unit:$('#munit').value};relabel(k,0);S.munit=k.unit;S.marks.push(k);S.marks.sort((x,y)=>distKm(x)-distKm(y));render();$('#mdist').focus()};
     $('#addmk').onclick=addMk;$('#mdist').onkeydown=e=>{if(e.key==='Enter')addMk()};$('#munit').onchange=e=>{S.munit=e.target.value};
@@ -193,7 +266,7 @@ function draw(){
   if(S.phase==='ready'){
     a.innerHTML=`<h1>Ready to race?</h1>
     <p class="hint">Check the line-up and markers, then start the clock.</p>
-    <div class="card"><b>Predicted order</b><ol>${S.order.map(p=>`<li>${esc(p.name)}</li>`).join('')}</ol></div>
+    <div class="card"><b>Predicted order</b><ol>${S.order.map(p=>`<li>${esc(p.name)}${S.goals[p.id]>0?` <span class="hint" style="margin:0">· goal ${fg(S.goals[p.id])}</span>`:''}</li>`).join('')}</ol></div>
     <div class="card"><b>Markers</b>${S.total!==''?`<div class="hint" style="margin:2px 0 0">Total ${esc(S.total)} ${S.unit}</div>`:''}<ol>${mks().map(k=>`<li>${esc(k===S.def&&+S.total>0?S.total+' '+S.unit:k.label)}</li>`).join('')}</ol></div>
     <button class="p lap" id="start">Start race</button>
     <button class="s" id="back" style="width:100%">← Back to edit</button>
@@ -203,33 +276,36 @@ function draw(){
   }
   const run=S.phase==='race',m=M(),n=m.actual.length,full=m.laps.length>=n;
   let gp=null;
-  {const ps=S.order.map(p=>paceInfo(p.id)).filter(Boolean).map(i=>i.t/i.d);if(ps.length)gp=ps.reduce((x,y)=>x+y,0)/ps.length}
+  {const ps=S.order.map(p=>recentPace(p.id)).filter(Boolean).map(i=>i.pace);if(ps.length)gp=ps.reduce((x,y)=>x+y,0)/ps.length}
   const D=totKm(),cd=distKm(m);
   const estLine=id=>{
     if(!run)return'';
-    const inf=paceInfo(id),pc=inf?inf.t/inf.d:gp;if(pc==null)return'';
-    const sy=inf?'~':'≈',parts=[];
-    if(cd>0&&timeAt(m,id)==null)parts.push('Arr '+sy+fmtE(pc*cd));
-    if(D>0)parts.push('Fin '+sy+fmtE(pc*D));
+    const r=recentPace(id);let pc,b,sy;
+    if(r){pc=r.pace;b={d:r.d,t:r.t};sy='~'}else if(gp!=null){pc=gp;b={d:0,t:0};sy='≈'}else return'';
+    const parts=[];
+    if(cd>0&&cd>b.d&&timeAt(m,id)==null)parts.push('Arr '+sy+fmtE(b.t+pc*(cd-b.d)));
+    if(D>b.d)parts.push('Fin '+sy+fmtE(b.t+pc*(D-b.d)));
     return parts.join(' · ');
   };
   a.innerHTML=`<h1>${run?'Race in progress':'Race finished'}</h1>
   <div class="clock" id="clk">${fmt(now())}</div>
   ${D>0?`<p class="hint" style="text-align:center;margin-top:-6px">Total distance ${esc(S.total)} ${S.unit}</p>`:''}
   ${run?`<button class="p lap" id="lap" ${full?'disabled':''}>${full?'All splits taken here':'Take split · '+ord(m.laps.length)+' runner'}</button>
-  <div class="bar"><button class="s" id="undo" ${m.laps.length?'':'disabled'}>Undo last split</button><button class="s" id="edr">Edit runners</button><button class="s" id="stop">Finish race</button></div>
-  <div class="bar"><button class="s" id="shr">Share QR</button><button class="s" id="scn">Scan QR</button></div>`
+  <div class="bar"><button class="s" id="undo" ${m.laps.length?'':'disabled'}>Undo last split</button></div>`
   :`<div class="bar"><button class="s" id="edr">Edit runners (add / remove)</button></div>
   <div class="bar"><button class="p" id="xl">Export to Excel</button><button class="s" id="cpt">Copy table</button></div>
   <div class="bar"><button class="s" id="shr">Share QR</button><button class="s" id="scn">Scan QR</button></div>
   <div class="bar"><button class="s" id="again">New race (same names)</button><button class="s" id="reset">Start over</button></div>`}
-  <div class="tabs">${S.markers.map((k,i)=>`<button class="tab ${i===S.cur?'on':''}" data-t="${i}">${esc(k.label)} · ${k.laps.filter(x=>x!=null).length}/${S.order.length}</button>`).join('')}${run?'<button class="tab" id="addm">+ Marker</button>':''}</div>
+  ${tabsHTML(S.markers.map((k,i)=>`<button class="tab ${i===S.cur?'on':''}" data-t="${i}">${esc(k.label)} · ${k.laps.filter(x=>x!=null).length}/${S.order.length}</button>`).join('')+(run?'<button class="tab" id="addm">+ Marker</button>':''))}
   <div class="add"><input id="dst" type="number" step="any" min="0" inputmode="decimal" value="${esc(m.dist)}" placeholder="Distance of this marker"><select id="unt" class="sm"><option value="mi" ${(m.unit||S.unit)==='mi'?'selected':''}>mi</option><option value="km" ${(m.unit||S.unit)==='km'?'selected':''}>km</option></select></div>
   ${run?'':'<p class="hint">Drag names to fix mix-ups. Tap a time to edit it.</p>'}
+  ${run&&D>0&&S.order.some(p=>S.goals[p.id]>0)?'<p class="hint">Goal pace: green = comfortably ahead · yellow = ahead but close to falling behind · red = behind goal pace. The number is how far behind (+) or ahead (−) of goal at this marker.</p>':''}
   <div class="grid"><div class="slots">${m.actual.map((_,i)=>`<div class="slot"><b>${ord(i)}</b><span ${m.laps[i]!=null?`data-ti="${i}"`:''}>${m.laps[i]!=null?fmt(m.laps[i]):'—'}</span><small>${i>0&&m.laps[i]!=null&&m.laps[i-1]!=null?'+'+fmt(m.laps[i]-m.laps[i-1]):''}</small></div>`).join('')}</div>
-  <div class="list" id="act">${m.actual.map((id,i)=>{const p=byId(id),pi=S.pred.indexOf(String(id)),d=pi-i,el=estLine(id);
-    const badge=pi<0?'<span class="b eq">new</span>':d>0?`<span class="b up">▲${d}</span>`:d<0?`<span class="b dn">▼${-d}</span>`:`<span class="b eq">✓</span>`;
-    return `<div class="row" data-id="${id}"><span class="h">☰</span><span class="nm">${esc(p.name)}${el?`<small>${el}</small>`:''}</span>${run?'':`<span class="pd">${pi<0?'Added':'Pred '+(pi+1)}</span>`}${badge}</div>`}).join('')}</div></div>`;
+  <div class="list" id="act">${m.actual.map((id,i)=>{const p=byId(id),el=estLine(id),gs=goalState(id,now()),gt=goalText(id,now()),hg=S.goals[id]>0;
+    return `<div class="row${gs?' g-'+gs.st:''}" data-id="${id}"><span class="h">⇅</span><span class="nm">${esc(p.name)}${(hg||el)?`<small>${hg?`<span class="gd">${gt}</span>`:''}${el}</small>`:''}</span></div>`}).join('')}</div></div>
+  ${run?`<div class="bar" style="margin-top:12px"><button class="s" id="shr">Share QR</button><button class="s" id="scn">Scan QR</button></div>
+  <div class="bar"><button class="s" id="edr">Edit runners</button><button class="s" id="stop">Finish race</button></div>
+  <div class="bar"><button class="s" id="inv">Invite helpers (QR)</button></div>`:''}`;
   sortable($('#act'),ids=>{m.actual=ids.map(Number);m.touched=true;render()});
   a.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{const t=+b.dataset.t,k=S.markers[t];if(S.phase==='race'&&t>0&&!k.laps.length&&!k.touched)k.actual=[...S.markers[t-1].actual];S.cur=t;render()});
   a.querySelectorAll('[data-ti]').forEach(b=>b.onclick=()=>{const i=+b.dataset.ti;S.modal={type:'time',i,t:fmt(m.laps[i])};render()});
@@ -238,7 +314,7 @@ function draw(){
   $('#edr').onclick=()=>{S.draft=newDraft();S.modal={type:'runners'};render()};bindSync();
   if($('#xl')){$('#xl').onclick=()=>exportXlsx(S);$('#cpt').onclick=()=>copyTable(S)}
   if(run){$('#lap').onclick=lap;$('#undo').onclick=()=>{if(m.laps.length){m.laps.pop();render();setFlash('Last split undone')}};$('#stop').onclick=finish;$('#addm').onclick=addMarker}
-  else{$('#again').onclick=()=>{S.phase='setup';render()};$('#reset').onclick=()=>{S.order=[];S.phase='setup';render()}}
+  else{$('#again').onclick=()=>{S.phase='setup';render()};$('#reset').onclick=()=>{S.order=[];S.goals={};S.phase='setup';render()}}
 }
 
 function est(k){
@@ -254,11 +330,11 @@ function renderModal(){
   const el=$('#modal'),md=S.modal;
   stopCam();if(!md){el.innerHTML='';return}
   const m=M();
-  if(md.type==='credits')return creditsModal(el);if(md.type==='resume')return resumeModal(el);if(md.type==='teams')return teamsModal(el);if(md.type==='invite')return inviteModal(el);if(md.type==='hres')return hresModal(el);if(md.type==='hdel')return hdelModal(el);if(md.type==='hist')return histModal(el);if(md.type==='share')return shareModal(el);if(md.type==='scan')return scanModal(el);if(md.type==='time'){
+  if(md.type==='credits')return creditsModal(el);if(md.type==='resume')return resumeModal(el);if(md.type==='teams')return teamsModal(el);if(md.type==='invite')return inviteModal(el);if(md.type==='hres')return hresModal(el);if(md.type==='hist')return histModal(el);if(md.type==='share')return shareModal(el);if(md.type==='scan')return scanModal(el);if(md.type==='time'){
     el.innerHTML=`<div class="ov"><div class="mdl"><h2>Edit time</h2>
     <p class="hint">${ord(md.i)} runner · ${esc(byId(m.actual[md.i]).name)}</p>
-    <input id="tt" value="${esc(md.t)}" inputmode="decimal">
-    <p class="hint" style="margin-top:6px">Use m:ss.cc or seconds (e.g. 1:05.30 or 65.3)</p>
+    <input id="tt" value="${esc(md.t)}" inputmode="text" autocomplete="off" autocapitalize="off">
+    <p class="hint" style="margin-top:6px">Type like 1:05.30 (min:sec.hundredths). Periods also work: 1.05.30 or 1.05. Just 65 means 65 seconds.</p>
     <div class="bar"><button class="s" id="mc">Cancel</button><button class="p" id="ms">Save</button></div></div></div>`;
     $('#mc').onclick=()=>{S.modal=null;render()};
     $('#ms').onclick=()=>{const v=parse($('#tt').value);if(v==null){$('#tt').style.borderColor='var(--bad)';return}m.laps[md.i]=v;S.modal=null;render()};
@@ -274,7 +350,7 @@ function renderModal(){
   ${done&&S.order.length>1?`<div class="card" style="margin-top:12px"><b>Merge duplicate runners</b><p class="hint" style="margin:4px 0 0">If one person was entered twice with different spellings, pick the name to keep and the duplicate to merge into it. Their times are combined.</p><label>Keep this name</label><select id="mk">${ropts(d.keep)}</select><label>Duplicate to merge in</label><select id="md">${ropts(d.drop)}</select><button class="s" id="mg" style="width:100%;margin-top:10px">Merge runners</button></div>`:''}
   <label>New runner</label><input id="nn" value="${esc(d.name)}" placeholder="Name" autocomplete="off">
   ${done?`<label>Place in ${esc(m.label)}</label><select id="ps">${opts}</select>
-  <label>Time (estimated from neighbours — edit if you like)</label><input id="tt" value="${esc(d.time)}" placeholder="m:ss.cc (optional)" inputmode="decimal">`
+  <label>Time (estimated from neighbours — edit if you like)</label><input id="tt" value="${esc(d.time)}" placeholder="e.g. 1:05.30 (optional)" inputmode="text" autocomplete="off" autocapitalize="off">`
   :`<p class="hint" style="margin-top:8px">New runners join at the bottom of each marker; drag them into place.</p>`}
   <div class="bar" style="margin-top:12px"><button class="s" id="mc">Close</button><button class="p" id="ma">Add runner</button></div></div></div>`;
   $('#nn').oninput=e=>{d.name=e.target.value};
@@ -298,14 +374,14 @@ function bindSync(){
 function flashUI(){let f=$('#flash');if(!f){f=document.createElement('div');f.id='flash';f.className='flash';document.body.appendChild(f)}f.textContent=S.flash;f.style.display=S.flash?'block':'none'}
 function setFlash(msg){S.flash=msg;flashUI();clearTimeout(setFlash.t);setFlash.t=setTimeout(()=>{S.flash='';flashUI()},3500)}
 function encodeState(){
-  const p={v:1,r:S.rid||'',e:S.epoch,f:Math.round(S.final),ph:S.phase,o:S.order.map(x=>[x.id,x.name]),pd:S.pred,u:S.unit,t:S.total,n:S.nid,ms:S.marks.map(k=>[k.label,k.dist,k.unit||S.unit]),df:S.def.dist,c:S.cur};
+  const p={v:1,r:S.rid||'',rn:S.raceName||'',e:S.epoch,f:Math.round(S.final),ph:S.phase,o:S.order.map(x=>[x.id,x.name]),pd:S.pred,u:S.unit,t:S.total,n:S.nid,ms:S.marks.map(k=>[k.label,k.dist,k.unit||S.unit]),df:S.def.dist,c:S.cur};
   if(S.phase==='race'||S.phase==='done')p.mk=S.markers.map(k=>[k.label,k.dist,k.actual,k.laps.map(x=>x==null?null:Math.round(x)),k.touched?1:0,k.unit||S.unit]);
   return 'RST1:'+JSON.stringify(p).replace(/[\u007f-\uffff]/g,c=>'\\u'+('0000'+c.charCodeAt(0).toString(16)).slice(-4));
 }
 function importCode(txt,scanAt){
   let p;
   try{txt=String(txt).trim();if(!txt.startsWith('RST1:'))return false;p=JSON.parse(txt.slice(5));if(p.k==='inv')return importInvite(p,scanAt);if(p.k==='res')return importResult(p,scanAt);if(!Array.isArray(p.o))return false}catch(e){return false}
-  const run=(p.ph==='race'||p.ph==='done')&&Array.isArray(p.mk);
+  const run=(p.ph==='race'||p.ph==='done')&&Array.isArray(p.mk)&&p.mk.length>0&&p.mk.every(x=>Array.isArray(x)&&Array.isArray(x[2])&&Array.isArray(x[3]));
   const same=run&&p.r&&p.r===S.rid&&(S.phase==='race'||S.phase==='done');
   if(same){
     p.o.forEach(([id,name])=>{if(!byId(id))S.order.push({id,name})});
@@ -321,12 +397,12 @@ function importCode(txt,scanAt){
     cancelAnimationFrame(S.raf);
     S.order=p.o.map(([id,name])=>({id,name}));S.pred=p.pd||[];S.unit=p.u||'mi';S.total=p.t||'';S.nid=p.n||S.nid;
     S.marks=(p.ms||[]).map(([label,dist,unit])=>({label,dist,unit:unit||S.unit}));S.def={label:'Marker 1',dist:p.df||''};
-    S.rid=p.r||'';S.epoch=p.e||0;
+    S.rid=p.r||'';S.raceName=p.rn||'';S.epoch=p.e||0;
     if(run){S.markers=p.mk.map(([label,dist,actual,laps,touched,unit])=>({label,dist,unit:unit||S.unit,actual,laps,touched:!!touched}));S.cur=Math.min(p.c||0,S.markers.length-1)}
-    if(p.ph==='race'){S.phase='race';S.start=performance.now()-(Date.now()-p.e);tick()}
+    if(p.ph==='race'&&run){S.phase='race';S.start=performance.now()-(Date.now()-p.e);tick()}
     else if(p.ph==='done'&&run){S.phase='done';S.final=p.f}
     else S.phase='ready';
-    setFlash(p.ph==='race'?'Joined race — clock synced':'Race loaded');
+    setFlash(p.ph==='race'&&run?'Joined race — clock synced':'Race loaded');
   }
   S.modal=null;render();return true;
 }
@@ -433,30 +509,157 @@ function zipFiles(files){
 }
 function xlsxTable(d){
   const mk=d.markers||[],byid=id=>d.order.find(p=>p.id==id);
-  const tm=(L,id)=>{const i=L.actual.indexOf(id);return i>=0&&L.laps[i]!=null?L.laps[i]:null};
-  let last=-1;mk.forEach((L,j)=>{if(L.laps.some(x=>x!=null))last=j});
-  const base=last>=0?mk[last].actual.slice():[];
+  const tm=(L,id)=>{const i=(L.actual||[]).indexOf(id);return i>=0&&L.laps[i]!=null?L.laps[i]:null};
+  const hasDist=L=>{const n=Number(L.dist);return Number.isFinite(n)&&n>0};
+  // Rows follow the finishing order at the furthest marker (by distance, any unit) that has at least one time.
+  let last=-1,bestKm=-1;
+  mk.forEach((L,j)=>{if(hasDist(L)&&(L.laps||[]).some(x=>x!=null)){const km=Number(L.dist)*((L.unit||d.unit||'mi')==='km'?1:1.609344);if(km>=bestKm){bestKm=km;last=j}}});
+  if(last<0)mk.forEach((L,j)=>{if((L.laps||[]).some(x=>x!=null))last=j});
+  const base=last>=0?(mk[last].actual||[]).slice():[];
   d.order.forEach(p=>{if(!base.includes(p.id))base.push(p.id)});
-  const heads=['Name',...mk.map(L=>L.label)];
-  const rows=base.filter(id=>byid(id)).map(id=>[byid(id).name,...mk.map(L=>tm(L,id))]);
-  return{heads,rows};
+  const normUnit=u=>(u||d.unit||'mi')==='km'?'km':'mi';
+  const dist=L=>{const n=Number(L.dist);if(!Number.isFinite(n)||n<=0)return null;return n*(normUnit(L.unit)==='mi'?1:1/1.609344)};
+  const is5k=()=>{const n=Number(d.total);const km=n*(normUnit(d.unit)==='mi'?1.609344:1);return Math.abs(km-5)<=0.08};
+  const points=mk.map((L,i)=>({L,i,mi:dist(L),unit:normUnit(L.unit),timeFor(id){return tm(L,id)}}));
+  const timedPoints=points.filter(p=>p.mi!=null);
+  // Columns run by distance (nearest first), whatever order the markers were added in, so splits are always later minus earlier.
+  const byDist=timedPoints.slice().sort((a,b)=>a.mi-b.mi||a.i-b.i);
+  const firstI=byDist.length?byDist[0].i:0;
+  const finish=(()=>{for(let i=byDist.length-1;i>=0;i--){const p=byDist[i];if(p.mi!=null&&p.timeFor(base.find(id=>p.timeFor(id)!=null))!=null)return p}return byDist.slice(-1)[0]||null})();
+  const finalIs5k=!!finish&&Math.abs(finish.mi-5/1.609344)<=0.025;
+  const raceIs5k=is5k()||finalIs5k;
+  // Keep genuine checkpoint columns. If the finish is recorded as 5 km and a real 3 Mile
+  // checkpoint exists, add only a derived Split: 3.1 Mile column (5 km minus 3 Mile).
+  // Do not create a fake 3.1 Mile cumulative checkpoint.
+  const milePts=byDist.filter(p=>p.unit==='mi');
+  const kmPts=byDist.filter(p=>p.unit==='km');
+  const real31=milePts.some(p=>Math.abs(p.mi-3.1)<0.025);
+  const threeMile=milePts.some(p=>Math.abs(p.mi-3)<0.025);
+  const has5kCheckpoint=kmPts.some(p=>Math.abs(p.mi-5/1.609344)<=0.025);
+  const edge31=!!(raceIs5k&&has5kCheckpoint&&!real31&&threeMile);
+  const formatPoint=(p,unit)=>p.unit===unit?String(p.L.label||'').trim():(unit==='mi'?(p.mi.toFixed(2).replace(/0+$/,'').replace(/\.$/,'')+' Mile'):(p.mi*1.609344).toFixed(2).replace(/0+$/,'').replace(/\.$/,'')+' km');
+  const unique=arr=>arr.filter((p,i)=>arr.findIndex(q=>q.i===p.i)===i);
+  const miles=unique(milePts), kms=unique(kmPts);
+  const labels=(arr,u)=>arr.map(p=>formatPoint(p,u));
+  const heads=['NAME',...labels(miles,'mi'),...labels(miles,'mi').map(x=>'Split: '+x),...(edge31?['Split: 3.1 Mile']:[]),...(raceIs5k?['AVG/MI']:[]),...labels(kms,'km'),...labels(kms,'km').map(x=>'Split: '+x),...(kms.length?['Avg/K']:[])];
+  const rows=base.filter(id=>byid(id)).map(id=>{
+    const mileTimes=miles.map(p=>p.timeFor(id)), kmTimes=kms.map(p=>p.timeFor(id));
+    // Only the race's first checkpoint can use start -> first as its split.
+    // Other unit groups must have a prior checkpoint in that same unit; never
+    // invent a 3-mile split when the race only recorded a single mile marker.
+    const split=(vals,arr)=>vals.map((v,i)=>v==null?null:(i===0?(arr[i].i===firstI?v:null):(vals[i-1]==null?null:v-vals[i-1])));
+    const fin=raceIs5k&&finish?finish.timeFor(id):null;
+    const avgMi=fin!=null?fin/3.1:null;
+    const kmLastIndex=kmTimes.reduce((a,v,i)=>v!=null?i:a,-1);
+    const kmDist=kmLastIndex>=0?kms[kmLastIndex].mi*1.609344:0;
+    const avgKm=kmLastIndex>=0&&kmDist>0?kmTimes[kmLastIndex]/kmDist:null;
+    return [byid(id).name,...mileTimes,...split(mileTimes,miles),...(edge31?[null]:[]),...(raceIs5k?[avgMi]:[]),...kmTimes,...split(kmTimes,kms),...(kms.length?[avgKm]:[])];
+  });
+  // Keep split columns whenever the checkpoint structure permits a formula,
+  // even if times are currently missing. Do not create a split for the first
+  // checkpoint of a unit group unless it is also the race's first checkpoint.
+  const splitPossible=new Set();
+  [[miles,'mi'],[kms,'km']].forEach(([arr])=>arr.forEach((p,i)=>{if(i>0||p.i===firstI)splitPossible.add('Split: '+formatPoint(p,arr===miles?'mi':'km'))}));
+  const keep=heads.map((h,i)=>{
+    if(edge31&&h==='Split: 3.1 Mile')return true; // derived last 0.1-mile split, not a cumulative checkpoint
+    return !/^Split:/.test(h)||splitPossible.has(h);
+  });
+  const finalHeads=heads.filter((h,i)=>keep[i]);
+  const ids=base.filter(id=>byid(id));
+  // Markers with no distance can't get splits or paces, but they still get a plain time column at the end (empty if nothing was timed), so times can be added later.
+  const plainPts=points.filter(p=>p.mi==null);
+  const plainStart=finalHeads.length;
+  const plainHeads=plainPts.map(p=>String(p.L.label||'').trim()||('Marker '+(p.i+1)));
+  const finalRows=rows.map((r,ri)=>[...r.filter((v,i)=>keep[i]),...plainPts.map(p=>p.timeFor(ids[ri]))]);
+  return {title:String(d.raceName||d.name||d.title||'Race Results'),heads:[...finalHeads,...plainHeads],rows:finalRows,plainStart,finishHeader:finish?formatPoint(finish,finish.unit):null};
 }
 function xlsxBytes(d){
-  const {heads,rows}=xlsxTable(d);
-  const X=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const {title,heads,rows,finishHeader,plainStart}=xlsxTable({...d,raceName:d.raceName||d.rn||''});
+  const X=s=>String(s).replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const col=i=>{let s='';i++;while(i>0){const m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26)}return s};
-  const wid=heads.map((h,i)=>i?Math.max(12,h.length+3):Math.max(12,h.length,...rows.map(r=>String(r[0]).length))+4);
+  const wid=heads.map((h,i)=>i?Math.max(12,h.length+3):Math.max(18,h.length,...rows.map(r=>String(r[0]).length))+4);
   const cs=(r,c,v,st)=>`<c r="${col(c)}${r}" s="${st}" t="inlineStr"><is><t xml:space="preserve">${X(v)}</t></is></c>`;
-  let sd=`<row r="1">${heads.map((h,c)=>cs(1,c,h,1)).join('')}</row>`;
-  rows.forEach((r,i)=>{sd+=`<row r="${i+2}">`+r.map((v,c)=>c===0?cs(i+2,c,v,1):v==null?'':`<c r="${col(c)}${i+2}" s="2"><v>${v/86400000}</v></c>`).join('')+'</row>'});
+  const styleForHead=(h,c)=>1;
+  const splitFormula=(h,rowNum)=>{
+    const target=h.slice(7).trim();
+    // Special 5 km finish split: explicitly bind Split: 3.1 Mile to the real 3 Mile
+    // and 5 km cumulative columns. This is a split-only column, never a fake checkpoint.
+    if(/^3\.1\s*Mile$/i.test(target)){
+      const distanceOf=label=>{
+        const text=String(label).trim();
+        // Exported labels can preserve custom names such as "5k Final" rather than "5 km".
+        // Recognize 5K explicitly so the derived Split: 3.1 Mile formula binds to that column.
+        if(/\b5\s*k\b/i.test(text))return 5/1.609344;
+        const m=text.match(/([0-9]+(?:\.[0-9]+)?)/);if(!m)return null;
+        const n=Number(m[1]);if(!Number.isFinite(n))return null;
+        if(/\bkm\b/i.test(text))return n/1.609344;
+        if(/\bmi\b|mile/i.test(text))return n;
+        return null;
+      };
+      const finishCol=heads.findIndex(x=>!/^Split:/i.test(x)&&Math.abs((distanceOf(x)??-99)-5/1.609344)<0.03);
+      const priorCol=heads.findIndex(x=>!/^Split:/i.test(x)&&Math.abs((distanceOf(x)??-99)-3)<0.03);
+      if(finishCol>=0&&priorCol>=0)return `IF(OR(${col(priorCol)}${rowNum}="",${col(finishCol)}${rowNum}=""),"",${col(finishCol)}${rowNum}-${col(priorCol)}${rowNum})`;
+      return null;
+    }
+    const splitAt=heads.findIndex(x=>x==='Split: '+target);
+    const cumulative=heads.map((x,i)=>({x,i})).filter(o=>o.i>0&&o.i<plainStart&&!/^Split:/.test(o.x)&&o.x!=='AVG/MI'&&o.x!=='Avg/K'&&o.x!=='NAME');
+    const ti=cumulative.findIndex(o=>o.x===target);
+    if(ti<0)return null;
+    const targetCol=cumulative[ti].i;
+    // Checkpoint columns are grouped by unit; AVG/MI separates mile and km groups.
+    const mileGroup=heads.indexOf('AVG/MI')<0?true:targetCol<heads.indexOf('AVG/MI');
+    const sameGroup=cumulative.filter(o=>(heads.indexOf('AVG/MI')<0||((o.i<heads.indexOf('AVG/MI'))===mileGroup))&&o.i<targetCol);
+    const prev=sameGroup.length?sameGroup[sameGroup.length-1]:null;
+    const a=col(targetCol)+rowNum;
+    if(!prev)return `IF(${a}="","",${a})`;
+    const b=col(prev.i)+rowNum;
+    return `IF(OR(${b}="",${a}=""),"",${a}-${b})`;
+  };
+  let sd=`<row r="1">${cs(1,0,title,2)}</row><row r="2">${heads.map((h,c)=>cs(2,c,h,styleForHead(h,c))).join('')}</row>`;
+  rows.forEach((r,i)=>{const rn=i+3;sd+=`<row r="${rn}">`+r.map((v,c)=>{if(c===0)return cs(rn,c,v,0);const h=heads[c],isFinishTime=!/^Split:/i.test(h)&&h===finishHeader,st=/^Split:/i.test(h)?6:(isFinishTime||h==='AVG/MI'||h==='Avg/K'?7:5);let formula=null;
+    if(/^Split:/.test(h))formula=splitFormula(h,rn);
+    // Averages use the furthest checkpoint that actually has a time, rather
+    // than requiring the nominal finish checkpoint to be present.
+    const checkpointDistance=(label)=>{
+      const text=String(label);
+      if(/\b5\s*k\b/i.test(text))return {km:5,mi:3.1};
+      const m=text.match(/([0-9]+(?:\.[0-9]+)?)/);if(!m)return null;
+      const n=Number(m[1]);if(!Number.isFinite(n)||n<=0)return null;
+      if(/km/i.test(text))return {km:n,mi:(Math.abs(n-5)<0.001?3.1:n/1.609344)};
+      return /mi|mile/i.test(text)?{km:n*1.609344,mi:n}:null;
+    };
+    if(h==='AVG/MI'||h==='Avg/K'){
+      const unit=h==='Avg/K'?'km':'mi';
+      const candidates=heads.map((x,j)=>({x,j,d:checkpointDistance(x)}))
+        .filter(o=>o.j>0&&o.j<plainStart&&!/^Split:/.test(o.x)&&o.x!=='AVG/MI'&&o.x!=='Avg/K'&&o.x!=='NAME'&&o.d)
+        .sort((a,b)=>a.d[unit]-b.d[unit]);
+      let expr='""';
+      for(const q of candidates){const qref=col(q.j)+rn,dist=q.d[unit];expr=`IF(${qref}<>"",${qref}/${dist},${expr})`;}
+      if(candidates.length)formula=expr;
+    }
+    if(formula){
+      // Store the computed result next to the formula so viewers that never recalculate
+      // (Protected View, previews, Files/Mail quick look) still show numbers.
+      const cv=ref=>{const m=ref.match(/^([A-Z]+)(\d+)$/);let ci=0;for(const ch of m[1])ci=ci*26+ch.charCodeAt(0)-64;ci--;const x=rows[Number(m[2])-3][ci];return x==null?'':Math.round(x/10)*10/86400000};
+      let cached='';
+      try{
+        const js=formula.replace(/([A-Z]+\d+)/g,'V("$1")').replace(/<>/g,'!==').replace(/(^|[^!=])=/g,'$1===');
+        cached=new Function('V','IF','OR','return '+js)(cv,(a,b,c2)=>a?b:c2,(...a)=>a.some(Boolean));
+      }catch(e){cached=''}
+      if(typeof cached==='number'&&Number.isFinite(cached))return `<c r="${col(c)}${rn}" s="${st}"><f>${X(formula)}</f><v>${cached}</v></c>`;
+      return `<c r="${col(c)}${rn}" s="${st}" t="str"><f>${X(formula)}</f><v></v></c>`;
+    }
+    if(v==null)return `<c r="${col(c)}${rn}" s="${st}"/>`;
+    return `<c r="${col(c)}${rn}" s="${st}"><v>${Math.round(v/10)*10/86400000}</v></c>`
+  }).join('')+'</row>'});
   const H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n',NS='xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"',RN='http://schemas.openxmlformats.org/officeDocument/2006/relationships';
   return zipFiles([
    {name:'[Content_Types].xml',text:H+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'},
    {name:'_rels/.rels',text:H+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="'+RN+'/officeDocument" Target="xl/workbook.xml"/></Relationships>'},
-   {name:'xl/workbook.xml',text:H+'<workbook '+NS+' xmlns:r="'+RN+'"><sheets><sheet name="Results" sheetId="1" r:id="rId1"/></sheets></workbook>'},
+   {name:'xl/workbook.xml',text:H+'<workbook '+NS+' xmlns:r="'+RN+'"><sheets><sheet name="Results" sheetId="1" r:id="rId1"/></sheets><calcPr calcMode="auto" fullCalcOnLoad="1" forceFullCalc="1"/></workbook>'},
    {name:'xl/_rels/workbook.xml.rels',text:H+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="'+RN+'/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="'+RN+'/styles" Target="styles.xml"/></Relationships>'},
-   {name:'xl/styles.xml',text:H+'<styleSheet '+NS+'><numFmts count="1"><numFmt numFmtId="164" formatCode="[m]:ss.00"/></numFmts><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>'},
-   {name:'xl/worksheets/sheet1.xml',text:H+'<worksheet '+NS+'><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>'+wid.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')+'</cols><sheetData>'+sd+'</sheetData></worksheet>'}
+   {name:'xl/styles.xml',text:H+'<styleSheet '+NS+'><numFmts count="1"><numFmt numFmtId="164" formatCode="[m]:ss.00"/></numFmts><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="5"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor theme="8" tint="0.7999816888943144"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor theme="5" tint="0.7999816888943144"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor theme="9" tint="0.7999816888943144"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left/><right/><top/><bottom style="thin"><color rgb="FFB0B0B0"/></bottom><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="8"><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="0" fontId="1" fillId="0" borderId="1" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="1" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="0" fontId="1" fillId="4" borderId="1" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1"/><xf numFmtId="164" fontId="0" fillId="3" borderId="1" xfId="0" applyNumberFormat="1" applyFill="1"/><xf numFmtId="164" fontId="0" fillId="4" borderId="1" xfId="0" applyNumberFormat="1" applyFill="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>'},
+   {name:'xl/worksheets/sheet1.xml',text:H+'<worksheet '+NS+'><sheetViews><sheetView workbookViewId="0"><pane ySplit="2" topLeftCell="A3" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>'+wid.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')+'</cols><sheetData>'+sd+'</sheetData></worksheet>'}
   ]);
 }
 /*XLSX-END*/
@@ -479,7 +682,7 @@ function copyTable(d){
 }
 const getHist=()=>{try{return JSON.parse(localStorage.getItem('rst-history-v1')||'[]')}catch(e){return[]}};
 const histTitle=e=>new Date(e.epoch||e.saved).toLocaleString([],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+' · '+e.order.length+' runners';
-const snapOf=()=>({phase:S.phase,order:S.order,pred:S.pred,marks:S.marks,def:S.def,total:S.total,unit:S.unit,markers:S.markers,cur:S.cur,final:S.final,nid:S.nid,rid:S.rid,epoch:S.epoch,invRid:S.invRid,hinv:S.hinv,hsel:S.hsel,hm:S.hm,hc:S.hc,saved:Date.now()});
+const snapOf=()=>({phase:S.phase,raceName:S.raceName||'',order:S.order,pred:S.pred,marks:S.marks,def:S.def,total:S.total,unit:S.unit,markers:S.markers,cur:S.cur,final:S.final,nid:S.nid,rid:S.rid,epoch:S.epoch,invRid:S.invRid,hinv:S.hinv,hsel:S.hsel,hm:S.hm,hc:S.hc,goals:S.goals,saved:Date.now()});
 function saveState(){
   if(!SAVE_OK)return;
   try{
@@ -493,7 +696,7 @@ function saveState(){
 }
 function loadSnap(o){
   cancelAnimationFrame(S.raf);
-  Object.assign(S,{phase:o.phase,order:o.order||[],pred:o.pred||[],marks:o.marks||[],def:o.def||{label:'Marker 1',dist:''},total:o.total||'',unit:o.unit||'mi',markers:o.markers||[],cur:Math.min(o.cur||0,Math.max(0,(o.markers||[]).length-1)),final:o.final||0,nid:o.nid||1,rid:o.rid||'',epoch:o.epoch||0,invRid:o.invRid||'',hinv:o.hinv||null,hsel:o.hsel||[],hm:o.hm||[],hc:o.hc||0,modal:null});
+  Object.assign(S,{phase:o.phase,raceName:o.raceName||'',order:o.order||[],pred:o.pred||[],marks:o.marks||[],def:o.def||{label:'Marker 1',dist:''},total:o.total||'',unit:o.unit||'mi',goals:o.goals||{},markers:o.markers||[],cur:Math.min(o.cur||0,Math.max(0,(o.markers||[]).length-1)),final:o.final||0,nid:o.nid||1,rid:o.rid||'',epoch:o.epoch||0,invRid:o.invRid||'',hinv:o.hinv||null,hsel:o.hsel||[],hm:o.hm||[],hc:o.hc||0,modal:null});
   if(S.phase==='race')S.start=performance.now()-(Date.now()-S.epoch);
 }
 let SAVE_OK=false;
@@ -514,7 +717,7 @@ function resumeModal(el){
     const b=$('#dr');
     if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Tap again to discard';return}
     S.pending=null;S.modal=null;
-    Object.assign(S,{phase:'setup',order:o.order||[],pred:[],marks:o.marks||[],def:o.def||{label:'Marker 1',dist:''},total:o.total||'',unit:o.unit||'mi',markers:[],cur:0,nid:o.nid||1,rid:'',epoch:0,final:0});
+    Object.assign(S,{phase:'setup',raceName:o.raceName||'',order:o.order||[],pred:[],marks:o.marks||[],def:o.def||{label:'Marker 1',dist:''},total:o.total||'',unit:o.unit||'mi',goals:o.goals||{},markers:[],cur:0,nid:o.nid||1,rid:'',epoch:0,final:0});
     SAVE_OK=true;render();setFlash('Race discarded — names kept');
   };
 }
@@ -557,21 +760,21 @@ const setTeams=t=>{try{localStorage.setItem('rst-teams-v1',JSON.stringify(t))}ca
 function teamsModal(el){
   const t=getTeams();
   el.innerHTML=`<div class="ov"><div class="mdl"><h2>Team presets</h2>
-  ${t.length?t.map((x,i)=>`<div class="card"><b>${esc(x.name)}</b><div class="hint" style="margin:2px 0 8px">${x.names.length} runner${x.names.length===1?'':'s'}: ${esc(x.names.slice(0,4).join(', '))}${x.names.length>4?'…':''}</div><div class="bar" style="margin-bottom:0"><button class="s" data-l="${i}">Load</button><button class="s" data-d="${i}">Delete</button></div></div>`).join(''):'<p class="hint">No saved teams yet.</p>'}
+  ${t.length?t.map((x,i)=>`<div class="card"><b>${esc(x.name)}</b><div class="hint" style="margin:2px 0 8px">${x.names.length} runner${x.names.length===1?'':'s'}: ${esc(x.names.slice(0,4).join(', '))}${x.names.length>4?'…':''}${x.goals&&x.goals.some(g=>g>0)?' · with goal times':''}</div><div class="bar" style="margin-bottom:0"><button class="s" data-l="${i}">Load</button><button class="s" data-d="${i}">Delete</button></div></div>`).join(''):'<p class="hint">No saved teams yet.</p>'}
   <label>Save the current names as a team</label>
   <div class="add"><input id="tn" placeholder="Team name" value="${esc(S.tdraft)}" autocomplete="off"><button class="p" id="ts" ${S.order.length?'':'disabled'}>Save</button></div>
-  <p class="hint">${S.order.length?'Saves the names in their current order. ':'Add names on the first screen, then come back to save them. '}Loading a team replaces the current names — then drag them into your predicted order.</p>
+  <p class="hint">${S.order.length?'Saves the names in their current order, along with any goal times. ':'Add names on the first screen, then come back to save them. '}Loading a team replaces the current names — then drag them into your predicted order.</p>
   <div class="bar"><button class="s" id="mc">Close</button></div></div></div>`;
   $('#mc').onclick=()=>{S.modal=null;render()};
   $('#tn').oninput=e=>{S.tdraft=e.target.value};
   $('#ts').onclick=()=>{
     const name=S.tdraft.trim();if(!name||!S.order.length)return;
-    const all=getTeams(),i=all.findIndex(x=>x.name.toLowerCase()===name.toLowerCase()),rec={name,names:S.order.map(p=>p.name)};
+    const all=getTeams(),i=all.findIndex(x=>x.name.toLowerCase()===name.toLowerCase()),rec={name,names:S.order.map(p=>p.name),goals:S.order.map(p=>S.goals[p.id]>0?S.goals[p.id]:0)};
     if(i>=0)all[i]=rec;else all.push(rec);
     setTeams(all);S.tdraft='';renderModal();setFlash('Team saved');
   };
   el.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{
-    const x=t[+b.dataset.l];S.order=x.names.map(n=>({id:S.nid++,name:n}));S.modal=null;render();setFlash('Team loaded — drag names into your predicted order');
+    const x=t[+b.dataset.l];S.order=x.names.map(n=>({id:S.nid++,name:n}));S.goals={};S.order.forEach((p,k)=>{const g=x.goals&&x.goals[k];if(g>0)S.goals[p.id]=g});S.modal=null;render();setFlash('Team loaded — drag names into your predicted order');
   });
   el.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{
     if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Tap again';return}
@@ -631,13 +834,6 @@ function liveModal(el,title,text,codeFn){
 }
 function inviteModal(el){liveModal(el,'Invite helpers','Helpers open the app, choose the <b>Helper</b> tab, and scan this QR. Finish names and markers before inviting helpers.',invCode)}
 function hresModal(el){liveModal(el,'Send to organizer','On the organizer’s phone choose <b>Import splits</b> and scan this QR. It changes every second to match clocks, so keep the screen steady until it’s read. You can send again after more splits.',resCode)}
-function hdelModal(el){
-  const k=S.hm[S.hc],i=S.modal.i;
-  el.innerHTML=`<div class="ov"><div class="mdl"><h2>Delete this split?</h2><p class="hint">${ord(i)} split. Splits after it move up one place.</p>
-  <div class="bar"><button class="s" id="mc">Cancel</button><button class="p" id="dl">Delete</button></div></div></div>`;
-  $('#mc').onclick=()=>{S.modal=null;render()};
-  $('#dl').onclick=()=>{k.taps.splice(i,1);S.modal=null;render()};
-}
 function hlap(){const k=S.hm[S.hc];if(!k||k.taps.length>=k.actual.length)return;k.taps.push(Date.now());render()}
 function drawHelper(){
   const a=$('#app'),inv=S.hinv;
@@ -671,18 +867,18 @@ function drawHelper(){
   a.innerHTML=`<h1>Timing as helper</h1>
   <p class="hint" style="margin-top:-6px">No stopwatch shown since exact split times are unknown until exported to the organizer.</p>
   <button class="p lap" id="hlap" ${full?'disabled':''}>${full?'All splits taken here':'Take split · '+ord(k.taps.length)+' runner'}</button>
-  <div class="bar"><button class="s" id="hundo" ${k.taps.length?'':'disabled'}>Undo last</button><button class="s" id="hsend">Send to organizer</button></div>
-  <div class="tabs">${S.hm.map((m,i)=>`<button class="tab ${i===S.hc?'on':''}" data-t="${i}">${esc(m.label)} · ${m.taps.length}/${m.actual.length}</button>`).join('')}</div>
-  <p class="hint">Drag ☰ to put names in the order they passed. Gaps show how far behind 1st each runner was. Tap a ✓ to delete a mistaken split.</p>
-  <div class="grid"><div class="slots" style="width:108px">${k.actual.map((_,i)=>`<div class="slot" ${i<k.taps.length?`data-ti="${i}" style="cursor:pointer"`:''}><b>${ord(i)}${i<k.taps.length?' ✓':''}</b><span>${i===0&&k.taps.length?'Leader':i>0&&i<k.taps.length?'+'+fmt(k.taps[i]-k.taps[0]):'—'}</span></div>`).join('')}</div>
-  <div class="list" id="act">${k.actual.map(id=>`<div class="row" data-id="${id}"><span class="h">☰</span><span class="nm">${esc(nameOf(id))}</span></div>`).join('')}</div></div>
+  <div class="bar"><button class="s" id="hundo" ${k.taps.length?'':'disabled'}>Undo last</button></div>
+  ${tabsHTML(S.hm.map((m,i)=>`<button class="tab ${i===S.hc?'on':''}" data-t="${i}">${esc(m.label)} · ${m.taps.length}/${m.actual.length}</button>`).join(''))}
+  <p class="hint">Press and drag ⇅ to put names in the order they passed. Gaps show how far behind 1st each runner was.</p>
+  <div class="grid"><div class="slots" style="width:108px">${k.actual.map((_,i)=>`<div class="slot"><b>${ord(i)}${i<k.taps.length?' ✓':''}</b><span>${i===0&&k.taps.length?'Leader':i>0&&i<k.taps.length?'+'+fmt(k.taps[i]-k.taps[0]):'—'}</span></div>`).join('')}</div>
+  <div class="list" id="act">${k.actual.map(id=>`<div class="row" data-id="${id}"><span class="h">⇅</span><span class="nm">${esc(nameOf(id))}</span></div>`).join('')}</div></div>
+  <button class="p" id="hsend" style="width:100%;margin-top:12px">Send to organizer</button>
   <div class="bar" style="margin-top:12px"><button class="s" id="hchg">Change markers</button><button class="s" id="hend">End session</button></div>`;
   sortable($('#act'),ids=>{k.actual=ids.map(Number);render()});
   $('#hlap').onclick=hlap;
   $('#hundo').onclick=()=>{k.taps.pop();render()};
   $('#hsend').onclick=()=>{S.modal={type:'hres'};render()};
   a.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{S.hc=+b.dataset.t;render()});
-  a.querySelectorAll('[data-ti]').forEach(b=>b.onclick=()=>{S.modal={type:'hdel',i:+b.dataset.ti};render()});
   $('#hchg').onclick=()=>{S.phase='hsetup';render()};
   $('#hend').onclick=e=>{const b=e.target;if(!b.dataset.sure){b.dataset.sure='1';b.textContent='Tap again — discards times';return}S.hinv=null;S.hm=[];S.hsel=[];S.hc=0;S.phase='hhome';render()};
 }
@@ -704,6 +900,7 @@ function mergeRunners(a,b){
   });
   const pa=S.pred.indexOf(String(a)),pb=S.pred.indexOf(String(b));
   if(pb>=0){if(pa<0)S.pred[pb]=String(a);else S.pred.splice(pb,1)}
+  if(S.goals[b]>0&&!(S.goals[a]>0))S.goals[a]=S.goals[b];delete S.goals[b];
   S.order=S.order.filter(p=>p.id!==b);
 }
 function addRunner(name,pos,t){
@@ -718,6 +915,7 @@ function addRunner(name,pos,t){
   });
 }
 function removeRunner(id){
+  delete S.goals[id];
   S.order=S.order.filter(p=>p.id!==id);S.pred=S.pred.filter(x=>x!==String(id));
   S.markers.forEach(k=>{const i=k.actual.indexOf(id);if(i<0)return;k.actual.splice(i,1);if(i<k.laps.length)k.laps.splice(i,1)});
 }
@@ -730,7 +928,8 @@ function addMarker(){
   S.markers.push({label:'Marker '+(S.markers.length+1),dist:'',unit:M().unit||S.unit,actual:[...M().actual],laps:[]});
   S.cur=S.markers.length-1;render();
 }
-function tick(){const c=$('#clk');if(c&&S.phase==='race')c.textContent=fmt(now());if(S.phase==='race')S.raf=requestAnimationFrame(tick)}
+let lastG=0;
+function tick(){const c=$('#clk');if(c&&S.phase==='race'){c.textContent=fmt(now());const t=performance.now();if(t-lastG>400){lastG=t;updGoals()}}if(S.phase==='race')S.raf=requestAnimationFrame(tick)}
 function lap(){
   if(S.phase!=='race')return;const m=M();
   if(m.laps.length>=m.actual.length)return;
@@ -744,4 +943,19 @@ document.addEventListener('keydown',e=>{if(e.code==='Space'&&!S.modal&&!['INPUT'
 render();
 try{restore()}catch(e){}
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+
+// The phone's number pad has no Done/Return key, so give it one: a floating Done button above the keyboard, and tapping outside a box also closes it.
+(function(){
+  const b=document.createElement('button');b.id='kbd';b.textContent='Done';document.body.appendChild(b);
+  const vv=window.visualViewport,isNum=e=>e&&e.tagName==='INPUT'&&/^(decimal|numeric)$/.test(e.inputMode||'');
+  const place=()=>{const a=document.activeElement;if(!isNum(a)){b.style.display='none';return}
+    b.style.display='block';const h=vv?vv.height:innerHeight,top=vv?vv.offsetTop:0;b.style.bottom=Math.max(8,innerHeight-(top+h)+8)+'px'};
+  document.addEventListener('focusin',()=>setTimeout(place,50));
+  document.addEventListener('focusout',()=>setTimeout(place,50));
+  if(vv){vv.addEventListener('resize',place);vv.addEventListener('scroll',place)}
+  b.addEventListener('pointerdown',e=>e.preventDefault());
+  b.addEventListener('click',()=>{const a=document.activeElement;if(a&&a.blur)a.blur();place()});
+  document.addEventListener('pointerdown',e=>{const a=document.activeElement;
+    if(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA')&&!e.target.closest('input,textarea,select,label,#kbd'))a.blur()});
+})();
 </script></body></html>
